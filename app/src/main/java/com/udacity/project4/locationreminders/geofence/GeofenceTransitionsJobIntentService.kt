@@ -40,7 +40,6 @@ class GeofenceTransitionsJobIntentService : JobIntentService(), CoroutineScope {
 
             if (geofencingEvent != null) {
                 if (geofencingEvent.hasError()) {
-                    Log.e("onHandleWork", geofencingEvent.errorCode.toString())
                     return
                 }
 
@@ -50,7 +49,13 @@ class GeofenceTransitionsJobIntentService : JobIntentService(), CoroutineScope {
             }
 
         }
+
+
+
+
+
     }
+
 
     private fun sendNotification(triggeringGeofences: List<Geofence>) {
 

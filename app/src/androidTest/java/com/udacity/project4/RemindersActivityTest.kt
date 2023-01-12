@@ -22,6 +22,8 @@ import com.udacity.project4.locationreminders.reminderslist.RemindersListViewMod
 import com.udacity.project4.locationreminders.savereminder.SaveReminderViewModel
 import com.udacity.project4.ui.MainActivity
 import com.udacity.project4.util.DataBindingIdlingResource
+import com.udacity.project4.util.EspressoIdlingResource
+import com.udacity.project4.util.monitorActivity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
@@ -44,13 +46,13 @@ import org.koin.test.get
 @LargeTest
 //END TO END test to black box test the app
 class RemindersActivityTest :
-    AutoCloseKoinTest() {// Extended Koin Test - embed autoclose @after method to close Koin after every test
+    AutoCloseKoinTest() {
 private lateinit var repository: ReminderDataSource
     private lateinit var appContext: Application
     private val dataBindingIdlingResource = DataBindingIdlingResource()
 
     // get activity context
-    private fun getActivity(activityScenario: ActivityScenario<RemindersActivity>): Activity? {
+    private fun getActivity(activityScenario: ActivityScenario<MainActivity>): Activity? {
         var activity: Activity? = null
         activityScenario.onActivity {
             activity = it
@@ -111,7 +113,7 @@ private lateinit var repository: ReminderDataSource
     fun addReminder() = kotlinx.coroutines.test.runTest {
 
 
-        val activityScenario = ActivityScenario.launch(RemindersActivity::class.java)
+        val activityScenario = ActivityScenario.launch(MainActivity::class.java)
         dataBindingIdlingResource.monitorActivity(activityScenario)
 
 
@@ -122,7 +124,7 @@ private lateinit var repository: ReminderDataSource
 
 
         onView(withContentDescription("Google Map")).perform(longClick())
-        onView(withId(R.id.save_btn)).perform(click())
+        onView(withId(R.id.btn_save_location)).perform(click())
 
 
         onView(withId(R.id.reminderTitle)).perform(replaceText("title"))
@@ -143,7 +145,7 @@ private lateinit var repository: ReminderDataSource
 
     @Test
     fun showSnackBar_errorEnterTitle(){
-        val activityScenario = ActivityScenario.launch(RemindersActivity::class.java)
+        val activityScenario = ActivityScenario.launch(MainActivity::class.java)
         dataBindingIdlingResource.monitorActivity(activityScenario)
 
         onView(withId(R.id.addReminderFAB)).perform(click())
@@ -160,7 +162,7 @@ private lateinit var repository: ReminderDataSource
 
     @Test
     fun showSnackBar_errorEnterLocation(){
-        val activityScenario = ActivityScenario.launch(RemindersActivity::class.java)
+        val activityScenario = ActivityScenario.launch(MainActivity::class.java)
         dataBindingIdlingResource.monitorActivity(activityScenario)
 
         onView(withId(R.id.addReminderFAB)).perform(click())
