@@ -6,6 +6,8 @@ import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import com.firebase.ui.auth.AuthUI
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.udacity.project4.R
 import com.udacity.project4.base.BaseFragment
 import com.udacity.project4.base.NavigationCommand
@@ -88,7 +90,9 @@ class ReminderListFragment : BaseFragment() {
     }
 
     private fun logOut(){
-        findNavController().navigate(R.id.action_reminderListFragment_to_authenticationFragment)
+        AuthUI.getInstance().signOut(requireContext()).addOnSuccessListener {
+            findNavController().navigate(R.id.action_reminderListFragment_to_authenticationFragment)
+        }
     }
 
 }

@@ -15,7 +15,7 @@
         <action
             android:id="@+id/to_reminders"
             app:destination="@id/reminderListFragment"
-            app:popUpTo="@id/authenticationFragment"
+            app:popUpTo="@id/nav_graph"
             app:popUpToInclusive="true"
 
             />
@@ -31,7 +31,10 @@
             app:destination="@id/saveReminderFragment" />
         <action
             android:id="@+id/action_reminderListFragment_to_authenticationFragment"
-            app:destination="@id/authenticationFragment" />
+            app:destination="@id/authenticationFragment"
+            app:popUpTo="@id/nav_graph"
+            app:popUpToInclusive="true"
+            />
     </fragment>
 
     <fragment

@@ -87,15 +87,6 @@ class SelectLocationFragment : BaseFragment() ,OnMapReadyCallback {
         }
     }
 
-    @SuppressLint("MissingPermission")
-    override fun onResume() {
-        super.onResume()
-        if(checkPermissionGranted() && ::mMap.isInitialized){
-
-                mMap.isMyLocationEnabled = true
-            }
-
-    }
 
     private fun setUpMap() {
         val mapFragment = childFragmentManager

@@ -44,7 +44,7 @@ class SaveReminderFragment : BaseFragment() {
 
     private val geofencePendingIntent: PendingIntent by lazy {
         val intent = Intent(requireContext(), GeofenceBroadcastReceiver::class.java)
-       // intent.action = ACTION_GEOFENCE_EVENT
+         intent.action = ACTION_GEOFENCE_EVENT
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             PendingIntent.getBroadcast(
                 requireContext(),
@@ -82,7 +82,6 @@ class SaveReminderFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.lifecycleOwner = this
         binding.selectLocation.setOnClickListener {
-            //            Navigate to another fragment to get the user location
             _viewModel.navigationCommand.value =
                 NavigationCommand.To(SaveReminderFragmentDirections.actionSaveReminderFragmentToSelectLocationFragment())
         }
@@ -96,7 +95,6 @@ class SaveReminderFragment : BaseFragment() {
             reminderDataItem =
                 ReminderDataItem(title, description, location, latitude!!, longitude)
             if (_viewModel.validateEnteredData(reminderDataItem)) {
-                //check for permission before adding geoFencing request then save to local
                 LocationPermissionHelper(
                     requireActivity(),
                     requireView(),
@@ -223,7 +221,6 @@ class SaveReminderFragment : BaseFragment() {
     }
     override fun onDestroy() {
         super.onDestroy()
-        //make sure to clear the view model after destroy, as it's a single view model.
         _viewModel.onClear()
     }
 }
