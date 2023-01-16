@@ -20,6 +20,7 @@ import org.junit.runner.RunWith
 import com.udacity.project4.locationreminders.data.dto.Result
 import kotlinx.coroutines.test.runTest
 import org.hamcrest.CoreMatchers
+import org.hamcrest.Matchers.`is`
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
@@ -58,8 +59,8 @@ class RemindersLocalRepositoryTest {
         val reminder = repository.getReminder(fakeReminder.id) as Result.Success
 
         //then
-        MatcherAssert.assertThat(reminder.data.title, Is.`is`("Shop"))
-        MatcherAssert.assertThat(reminder.data.description, Is.`is`("buy food for launch"))
+        MatcherAssert.assertThat(reminder.data.title, Is.`is`("titel"))
+        MatcherAssert.assertThat(reminder.data.description, Is.`is`("descrption"))
         MatcherAssert.assertThat(reminder.data.location, Is.`is`(fakeReminder.location))
         MatcherAssert.assertThat(reminder.data.longitude, Is.`is`(fakeReminder.longitude))
         MatcherAssert.assertThat(reminder.data.latitude, Is.`is`(fakeReminder.latitude))
@@ -92,7 +93,7 @@ class RemindersLocalRepositoryTest {
         val reminder = repository.getReminders() as com.udacity.project4.locationreminders.data.dto.Result.Success
 
         //then
-        assertThat(reminder.data.size, Is.`is`(0))
+        assertThat(reminder.data.size, `is`(0))
 
     }
 
@@ -108,5 +109,6 @@ class RemindersLocalRepositoryTest {
         // THEN
        assertThat(result.message, CoreMatchers.`is`("Reminder not found!"))
     }
+
 
 }

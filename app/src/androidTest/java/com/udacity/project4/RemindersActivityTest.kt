@@ -51,7 +51,6 @@ private lateinit var repository: ReminderDataSource
     private lateinit var appContext: Application
     private val dataBindingIdlingResource = DataBindingIdlingResource()
 
-    // get activity context
     private fun getActivity(activityScenario: ActivityScenario<MainActivity>): Activity? {
         var activity: Activity? = null
         activityScenario.onActivity {
@@ -84,14 +83,11 @@ private lateinit var repository: ReminderDataSource
             single { RemindersLocalRepository(get()) }
             single { LocalDB.createRemindersDao(appContext) }
         }
-        //declare a new koin module
         startKoin {
             modules(listOf(myModule))
         }
-        //Get our real repository
         repository = get()
 
-        //clear the data to start fresh
         runBlocking {
             repository.deleteAllReminders()
         }
@@ -138,7 +134,6 @@ private lateinit var repository: ReminderDataSource
 
         onView(withText("title")).check(matches(isDisplayed()))
 
-        //close activity resetting the db.
         activityScenario.close()
     }
 

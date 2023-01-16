@@ -5,6 +5,7 @@ import android.app.Activity
 import android.app.PendingIntent
 import android.app.PendingIntent.FLAG_MUTABLE
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -27,8 +28,8 @@ import com.udacity.project4.base.BaseFragment
 import com.udacity.project4.base.NavigationCommand
 import com.udacity.project4.databinding.FragmentSaveReminderBinding
 import com.udacity.project4.locationreminders.geofence.GeofenceBroadcastReceiver
+import com.udacity.project4.locationreminders.geofence.GeofenceBroadcastReceiver.Companion.ACTION_GEOFENCE_EVENT
 import com.udacity.project4.locationreminders.reminderslist.ReminderDataItem
-import com.udacity.project4.utils.Constants.ACTION_GEOFENCE_EVENT
 import com.udacity.project4.utils.LocationPermissionHelper
 import com.udacity.project4.utils.setDisplayHomeAsUpEnabled
 import org.koin.android.ext.android.inject
@@ -43,10 +44,13 @@ class SaveReminderFragment : BaseFragment() {
     private lateinit var activityResultLauncherPermissions: ActivityResultLauncher<Array<String>>
     private lateinit var geofencingClient: GeofencingClient
 
+    private val runningQOrLater =
+        Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
 
     private val geofencePendingIntent: PendingIntent by lazy {
         val intent = Intent(requireContext(), GeofenceBroadcastReceiver::class.java)
          intent.action = ACTION_GEOFENCE_EVENT
+        PendingIntent.getBroadcast(requireContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             PendingIntent.getBroadcast(
                 requireContext(),
@@ -54,7 +58,8 @@ class SaveReminderFragment : BaseFragment() {
                 intent,
                 PendingIntent.FLAG_UPDATE_CURRENT or FLAG_MUTABLE
             )
-        } else {
+        }
+        else {
             PendingIntent.getBroadcast(
                 requireContext(),
                 0,
@@ -71,11 +76,11 @@ class SaveReminderFragment : BaseFragment() {
     ): View? {
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_save_reminder, container, false)
+        geofencingClient = LocationServices.getGeofencingClient(requireActivity())
 
         setDisplayHomeAsUpEnabled(true)
         binding.viewModel = _viewModel
         binding.lifecycleOwner = this
-        geofencingClient = LocationServices.getGeofencingClient(requireActivity())
         getPermissionResult()
         return binding.root
     }
@@ -110,7 +115,6 @@ class SaveReminderFragment : BaseFragment() {
         }
         }
 
-
     private fun getPermissionResult() {
         activityResultLauncherPermissions =
             registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { result ->
@@ -134,6 +138,8 @@ class SaveReminderFragment : BaseFragment() {
                 }
             }
     }
+
+
     private fun checkLocationSettingsAndStartGeofence(resolve: Boolean = true) {
         //location request and location request builder
         val locationRequest = LocationRequest.create().apply {
