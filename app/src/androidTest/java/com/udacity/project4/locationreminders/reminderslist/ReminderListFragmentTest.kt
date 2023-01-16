@@ -27,6 +27,7 @@ import com.udacity.project4.locationreminders.savereminder.SaveReminderViewModel
 import com.udacity.project4.util.DataBindingIdlingResource
 import com.udacity.project4.util.monitorFragment
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runBlockingTest
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Assert.*
@@ -68,7 +69,7 @@ class ReminderListFragmentTest {
 
         stopKoin()
         appContext = getApplicationContext()
-
+        repository = FakeDataSource(mutableListOf())
         val module = module {
 
             viewModel {
@@ -132,13 +133,26 @@ class ReminderListFragmentTest {
 
 
 
+
     @Test
-    fun testData(){
+    fun reminderListFragment_NoReminders() = runTest {
+        // GIVEN
+        repository.deleteAllReminders()
 
-        val fragmentScenario = launchFragmentInContainer<ReminderListFragment>(Bundle(), R.style.Theme_LocationReminder)
-        dataBindingIdlingResource.monitorFragment(fragmentScenario)
-        onView(ViewMatchers.withText(R.string.no_data))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        // WHEN
+        val scenario  = launchFragmentInContainer<ReminderListFragment>(Bundle(),
+            R.style.Theme_LocationReminder)
+        val navController = mock(NavController::class.java)
+        scenario.onFragment {
+            Navigation.setViewNavController(it.view!!, navController)
+        }
 
+        // THEN -
+        onView(withText(fakeReminder.title)).check(ViewAssertions.doesNotExist())
+        onView(withText(R.string.no_data)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        onView(withId(R.id.noDataTextView)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
+
+
+
 }
