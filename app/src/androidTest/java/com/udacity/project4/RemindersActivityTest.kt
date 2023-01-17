@@ -2,19 +2,16 @@ package com.udacity.project4
 
 import android.app.Activity
 import android.app.Application
-import androidx.room.Room
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider.getApplicationContext
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.IdlingRegistry
-import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.RootMatchers
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
-import androidx.test.rule.ActivityTestRule
 import com.udacity.project4.locationreminders.data.ReminderDataSource
 import com.udacity.project4.locationreminders.data.local.LocalDB
 import com.udacity.project4.locationreminders.data.local.RemindersLocalRepository
@@ -22,32 +19,31 @@ import com.udacity.project4.locationreminders.reminderslist.RemindersListViewMod
 import com.udacity.project4.locationreminders.savereminder.SaveReminderViewModel
 import com.udacity.project4.ui.MainActivity
 import com.udacity.project4.util.DataBindingIdlingResource
-import com.udacity.project4.util.EspressoIdlingResource
 import com.udacity.project4.util.monitorActivity
+import com.udacity.project4.utils.EspressoIdlingResource
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.test.runTest
-import org.hamcrest.CoreMatchers.*
+import kotlinx.coroutines.test.runBlockingTest
+import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.core.IsNot
 import org.junit.After
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.androidx.viewmodel.dsl.viewModel
-import org.koin.core.context.GlobalContext
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
 import org.koin.dsl.module
 import org.koin.test.AutoCloseKoinTest
 import org.koin.test.get
 
+
 @RunWith(AndroidJUnit4::class)
 @LargeTest
 //END TO END test to black box test the app
 class RemindersActivityTest :
     AutoCloseKoinTest() {
-private lateinit var repository: ReminderDataSource
+    private lateinit var repository: ReminderDataSource
     private lateinit var appContext: Application
     private val dataBindingIdlingResource = DataBindingIdlingResource()
 
@@ -65,7 +61,7 @@ private lateinit var repository: ReminderDataSource
      */
     @Before
     fun init() {
-        stopKoin()//stop the original app koin
+        stopKoin()
         appContext = getApplicationContext()
         val myModule = module {
             viewModel {
@@ -80,11 +76,13 @@ private lateinit var repository: ReminderDataSource
                     get() as ReminderDataSource
                 )
             }
-            single { RemindersLocalRepository(get()) }
+            single<ReminderDataSource> { RemindersLocalRepository(get()) as ReminderDataSource }
             single { LocalDB.createRemindersDao(appContext) }
+
         }
         startKoin {
             modules(listOf(myModule))
+
         }
         repository = get()
 
@@ -101,14 +99,12 @@ private lateinit var repository: ReminderDataSource
 
     @After
     fun unregisterIdlingResource() {
-        IdlingRegistry.getInstance().unregister(EspressoIdlingResource.countingIdlingResource)
+       IdlingRegistry.getInstance().unregister(EspressoIdlingResource.countingIdlingResource)
         IdlingRegistry.getInstance().unregister(dataBindingIdlingResource)
     }
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun addReminder() = kotlinx.coroutines.test.runTest {
-
-
+    fun addReminder() = runBlockingTest {
         val activityScenario = ActivityScenario.launch(MainActivity::class.java)
         dataBindingIdlingResource.monitorActivity(activityScenario)
 
