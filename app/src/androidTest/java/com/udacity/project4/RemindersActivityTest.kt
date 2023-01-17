@@ -24,6 +24,7 @@ import com.udacity.project4.utils.EspressoIdlingResource
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.core.IsNot
 import org.junit.After
@@ -102,8 +103,31 @@ class RemindersActivityTest :
        IdlingRegistry.getInstance().unregister(EspressoIdlingResource.countingIdlingResource)
         IdlingRegistry.getInstance().unregister(dataBindingIdlingResource)
     }
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun addReminder() = runTest {
+        val activityScenario = ActivityScenario.launch(MainActivity::class.java)
+        dataBindingIdlingResource.monitorActivity(activityScenario)
+        onView(withId(R.id.addReminderFAB)).perform(click())
+        onView(withId(R.id.selectLocation)).perform(click())
+
+        onView(withContentDescription("Google Map")).perform(longClick())
+        onView(withId(R.id.btn_save_location)).perform(click())
+
+        onView(withId(R.id.reminderTitle)).perform(replaceText("title"))
+        onView(withId(R.id.reminderDescription)).perform(replaceText("describtion"))
+
+        onView(withId(R.id.saveReminder)).perform(click())
+
+        onView(withText(R.string.reminder_saved))
+            .inRoot(RootMatchers.withDecorView(IsNot.not(`is`(getActivity(activityScenario)?.window?.decorView))))
+            .check(matches(isDisplayed()))
+
+        onView(withText("title")).check(matches(isDisplayed()))
 
 
+        activityScenario.close()
+    }
 
     @Test
     fun showSnackBar_errorEnterTitle(){
