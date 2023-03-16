@@ -12,18 +12,16 @@ import androidx.test.espresso.matcher.RootMatchers
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
-import com.udacity.project4.locationreminders.data.ReminderDataSource
-import com.udacity.project4.locationreminders.data.local.LocalDB
-import com.udacity.project4.locationreminders.data.local.RemindersLocalRepository
-import com.udacity.project4.locationreminders.reminderslist.RemindersListViewModel
-import com.udacity.project4.locationreminders.savereminder.SaveReminderViewModel
+import com.udacity.project4.data.local.LocalDataSource
+import com.udacity.project4.data.repository.RemindersRepositoryImp
+import com.udacity.project4.ui.reminderslist.RemindersListViewModel
+import com.udacity.project4.ui.savereminder.SaveReminderViewModel
 import com.udacity.project4.ui.MainActivity
 import com.udacity.project4.util.DataBindingIdlingResource
 import com.udacity.project4.util.monitorActivity
 import com.udacity.project4.utils.EspressoIdlingResource
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.test.runBlockingTest
 import kotlinx.coroutines.test.runTest
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.core.IsNot
@@ -44,7 +42,7 @@ import org.koin.test.get
 //END TO END test to black box test the app
 class RemindersActivityTest :
     AutoCloseKoinTest() {
-    private lateinit var repository: ReminderDataSource
+    private lateinit var repository: LocalDataSource
     private lateinit var appContext: Application
     private val dataBindingIdlingResource = DataBindingIdlingResource()
 
@@ -68,16 +66,16 @@ class RemindersActivityTest :
             viewModel {
                 RemindersListViewModel(
                     appContext,
-                    get() as ReminderDataSource
+                    get() as LocalDataSource
                 )
             }
             single {
                 SaveReminderViewModel(
                     appContext,
-                    get() as ReminderDataSource
+                    get() as LocalDataSource
                 )
             }
-            single<ReminderDataSource> { RemindersLocalRepository(get()) as ReminderDataSource }
+            single<LocalDataSource> { RemindersRepositoryImp(get()) as LocalDataSource }
             single { LocalDB.createRemindersDao(appContext) }
 
         }

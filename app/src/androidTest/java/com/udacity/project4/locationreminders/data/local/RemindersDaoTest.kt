@@ -2,13 +2,12 @@ package com.udacity.project4.locationreminders.data.local
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
-import androidx.test.core.app.ApplicationProvider
 import androidx.test.core.app.ApplicationProvider.getApplicationContext
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.SmallTest;
-import com.udacity.project4.locationreminders.data.dto.ReminderDTO
-import com.udacity.project4.locationreminders.reminderslist.ReminderDataItem
+import com.udacity.project4.domain.model.ReminderDTO
+import com.udacity.project4.data.local.db.RemindersDatabase
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -29,7 +28,7 @@ import org.junit.Test
 @SmallTest
 class RemindersDaoTest {
 
-   lateinit var database:RemindersDatabase
+   lateinit var database: RemindersDatabase
     @get:Rule
     var instantExecutorRule = InstantTaskExecutorRule()
 

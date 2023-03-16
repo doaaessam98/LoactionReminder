@@ -1,10 +1,12 @@
 package com.udacity.project4.locationreminders.data
 
-import com.udacity.project4.locationreminders.data.dto.ReminderDTO
-import com.udacity.project4.locationreminders.data.dto.Result
+import com.udacity.project4.domain.model.ReminderDTO
+import com.udacity.project4.base.Result
+import com.udacity.project4.data.local.LocalDataSource
 
 //Use FakeDataSource that acts as a test double to the LocalDataSource
-class FakeDataSource (var reminders: MutableList<ReminderDTO> = mutableListOf()): ReminderDataSource {
+class FakeDataSource (var reminders: MutableList<ReminderDTO> = mutableListOf()):
+    LocalDataSource {
 
 //    TODO: Create a fake data source to act as a double to the real data source
     private var shouldReturnError = false

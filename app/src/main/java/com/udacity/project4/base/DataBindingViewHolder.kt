@@ -2,6 +2,7 @@ package com.udacity.project4.base
 
 import androidx.databinding.ViewDataBinding
 import androidx.databinding.library.baseAdapters.BR
+
 import androidx.recyclerview.widget.RecyclerView
 
 /**

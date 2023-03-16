@@ -6,7 +6,7 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.matcher.ViewMatchers.assertThat
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.MediumTest
-import com.udacity.project4.locationreminders.data.dto.ReminderDTO
+import com.udacity.project4.domain.model.ReminderDTO
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
@@ -17,7 +17,9 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import com.udacity.project4.locationreminders.data.dto.Result
+import com.udacity.project4.base.Result
+import com.udacity.project4.data.local.db.RemindersDatabase
+import com.udacity.project4.data.repository.RemindersRepositoryImp
 import kotlinx.coroutines.test.runTest
 import org.hamcrest.CoreMatchers
 import org.hamcrest.Matchers.`is`
@@ -28,8 +30,8 @@ import org.hamcrest.Matchers.`is`
 @MediumTest
 class RemindersLocalRepositoryTest {
 
-    lateinit var database:RemindersDatabase
-    lateinit var repository: RemindersLocalRepository
+    lateinit var database: RemindersDatabase
+    lateinit var repository: RemindersRepositoryImp
     @get:Rule
     var instantExecutorRule = InstantTaskExecutorRule()
 
@@ -43,7 +45,7 @@ class RemindersLocalRepositoryTest {
             RemindersDatabase::class.java
         ).build()
 
-         repository= RemindersLocalRepository(
+         repository= RemindersRepositoryImp(
             database.reminderDao(),
             Dispatchers.Main
         )
@@ -75,7 +77,7 @@ class RemindersLocalRepositoryTest {
         repository.saveReminder(fakeReminder)
         repository.saveReminder(fakeReminder2)
         // when
-        val reminder = repository.getReminders() as com.udacity.project4.locationreminders.data.dto.Result.Success
+        val reminder = repository.getReminders() as Result.Success
 
         //then
         assertThat(reminder.data.size, Is.`is`(2))
@@ -90,7 +92,7 @@ class RemindersLocalRepositoryTest {
         //Given
         repository.deleteAllReminders()
         // when
-        val reminder = repository.getReminders() as com.udacity.project4.locationreminders.data.dto.Result.Success
+        val reminder = repository.getReminders() as Result.Success
 
         //then
         assertThat(reminder.data.size, `is`(0))

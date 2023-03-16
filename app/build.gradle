@@ -1,10 +1,15 @@
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
-apply plugin: "androidx.navigation.safeargs.kotlin"
-apply plugin: 'com.google.gms.google-services'
-apply plugin: 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
 
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id "androidx.navigation.safeargs.kotlin"
+    id 'com.google.gms.google-services'
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
+    id 'com.google.dagger.hilt.android'
+    id 'kotlin-parcelize'
+    id 'dagger.hilt.android.plugin'
+}
 android {
     compileSdkVersion rootProject.compileSdkVersion
 
@@ -52,14 +57,28 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout:$constraintVersion"
     implementation 'com.google.code.gson:gson:2.9.0'
     // Architecture Components
+
+    // hilt
+    implementation("com.google.dagger:hilt-android:2.38.1")
+    kapt("com.google.dagger:hilt-android-compiler:2.38.1")
+    kapt 'androidx.hilt:hilt-compiler:1.0.0'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.5.2'
+    // When using Kotlin.
+    kapt("androidx.hilt:hilt-compiler:1.0.0")
+
+
     //Room dependencies
     implementation "androidx.room:room-ktx:$roomVersion"
     implementation "androidx.room:room-runtime:$roomVersion"
     kapt "androidx.room:room-compiler:$roomVersion"
-    //Coroutines Dependencies
+
+    //Coroutines Dependencies ....1.6.4
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
+    implementation  "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"
+
+
     //Navigation dependencies
-    implementation 'androidx.appcompat:appcompat:1.5.1'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation "androidx.constraintlayout:constraintlayout:$constraintVersion"
     kapt "androidx.lifecycle:lifecycle-compiler:$archLifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleVersionExtenstions"
@@ -68,18 +87,23 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:$navigationVersion"
     implementation "androidx.navigation:navigation-ui-ktx:$navigationVersion"
     implementation "androidx.test.espresso:espresso-idling-resource:$espressoVersion"
+
     //Maps & Geofencing
     implementation "com.google.android.gms:play-services-location:$playServicesVersionLocation"
     implementation "com.google.android.gms:play-services-maps:$playServicesVersionMaps"
+
     //Firebase
     implementation 'com.google.firebase:firebase-auth-ktx:21.1.0'
     implementation 'com.firebaseui:firebase-ui-auth:8.0.2'
+
     //Koin
     implementation "io.insert-koin:koin-android:$koinVersion"
     testImplementation "io.insert-koin:koin-test:$koinVersion"
     androidTestImplementation "io.insert-koin:koin-test:$koinVersion"
+
     // Koin for JUnit 4
     androidTestImplementation "io.insert-koin:koin-test-junit4:$koinVersion"
+
     // Dependencies for local unit tests
     testImplementation "junit:junit:$junitVersion"
     testImplementation "org.hamcrest:hamcrest-all:$hamcrestVersion"
@@ -89,6 +113,7 @@ dependencies {
     testImplementation "org.robolectric:robolectric:$robolectricVersion"
     testImplementation "com.google.truth:truth:$truthVersion"
     testImplementation "org.mockito:mockito-core:$mockitoVersion"
+
     // AndroidX Test - JVM testing
     testImplementation "androidx.test:core-ktx:$androidXTestCoreVersion"
     testImplementation "androidx.test.ext:junit-ktx:$androidXTestExtKotlinRunnerVersion"
@@ -118,4 +143,7 @@ dependencies {
     implementation 'com.android.support:multidex:1.0.3'
 
 
+}
+kapt {
+    correctErrorTypes = true
 }

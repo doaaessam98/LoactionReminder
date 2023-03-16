@@ -1,8 +1,13 @@
 package com.udacity.project4.base
 
-import android.location.Location
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
+import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
@@ -10,11 +15,32 @@ import com.google.android.material.snackbar.Snackbar
 /**
  * Base Fragment to observe on the common LiveData objects
  */
-abstract class BaseFragment : Fragment() {
+abstract class BaseFragment<VDataBinding:ViewDataBinding, VM:BaseViewModel>() : Fragment() {
     /**
      * Every fragment has to have an instance of a view model that extends from the BaseViewModel
      */
-    abstract val _viewModel: BaseViewModel
+
+
+    protected abstract val _viewModel: VM
+
+    private  var _binding: VDataBinding? = null
+    val binding: VDataBinding get() = _binding!!
+    protected abstract fun getViewDataBinding(): VDataBinding
+
+
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+          _binding = getViewDataBinding()
+          _binding?.let {
+              it.executePendingBindings()
+              it.lifecycleOwner = viewLifecycleOwner
+          }
+        return binding.root
+    }
 
     override fun onStart() {
         super.onStart()
@@ -43,6 +69,9 @@ abstract class BaseFragment : Fragment() {
         })
     }
 
-
+    override fun onStop() {
+        super.onStop()
+        _binding=null
+    }
 
 }

@@ -8,13 +8,14 @@ import com.udacity.project4.locationreminders.data.FakeDataSource
 import com.udacity.project4.locationreminders.getOrAwaitValue
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.`is`
-import com.udacity.project4.locationreminders.reminderslist.ReminderDataItem
+import com.udacity.project4.ui.reminderslist.ReminderDataItem
 import junit.framework.Assert.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.runner.RunWith
 import org.koin.core.context.stopKoin
 import com.udacity.project4.R
 import com.udacity.project4.locationreminders.MainCoroutineRule
+import com.udacity.project4.ui.savereminder.SaveReminderViewModel
 import kotlinx.coroutines.test.pauseDispatcher
 import kotlinx.coroutines.test.resumeDispatcher
 import org.junit.*
@@ -24,7 +25,7 @@ import org.mockito.internal.matchers.Equals
 @RunWith(AndroidJUnit4::class)
 class SaveReminderViewModelTest {
 
-     lateinit var viewModel:SaveReminderViewModel
+     lateinit var viewModel: SaveReminderViewModel
      lateinit var repository: FakeDataSource
 
 
