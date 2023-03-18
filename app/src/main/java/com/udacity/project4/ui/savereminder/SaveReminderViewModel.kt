@@ -11,10 +11,14 @@ import com.udacity.project4.data.local.LocalDataSource
 import com.udacity.project4.domain.model.ReminderDTO
 import com.udacity.project4.domain.useCase.AddNoteUseCase
 import com.udacity.project4.ui.reminderslist.ReminderDataItem
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class SaveReminderViewModel(
-    val app: Application, private  val addNoteUseCase: AddNoteUseCase) :
+@HiltViewModel
+class SaveReminderViewModel @Inject constructor(
+    val app: Application,
+    private  val addNoteUseCase: AddNoteUseCase) :
     BaseViewModel(app) {
 
     val reminderTitle = MutableLiveData<String?>()
@@ -82,4 +86,11 @@ class SaveReminderViewModel(
         }
         return true
     }
+
+     fun  getReminder():ReminderDataItem{
+         return ReminderDataItem(title = reminderTitle.value,
+                                 description = reminderDescription.value,
+                                  location = reminderSelectedLocationStr.value,
+                                   latitude = latitude.value, longitude = longitude.value)
+     }
 }

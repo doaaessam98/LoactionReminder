@@ -1,6 +1,7 @@
 package com.udacity.project4.ui.reminderslist
 
 import android.app.Application
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.udacity.project4.base.BaseViewModel
@@ -18,7 +19,8 @@ class RemindersListViewModel @Inject constructor(
     private val getRemindersUseCase: GetRemindersUseCase
 ) : BaseViewModel(app) {
 
-    val remindersList = MutableLiveData<List<ReminderDataItem>>()
+     private  var  _remindersList  = MutableLiveData<List<ReminderDataItem>>()
+     val remindersList :LiveData<List<ReminderDataItem>> = _remindersList
 
     /**
      * Get all the reminders from the DataSource and add them to the remindersList to be shown on the UI,
@@ -27,29 +29,17 @@ class RemindersListViewModel @Inject constructor(
     fun loadReminders() {
         showLoading.value = true
         viewModelScope.launch {
-            //interacting with the dataSource has to be through a coroutine
-            val result = getRemindersUseCase.invoke()
-            showLoading.postValue(false)
-            when (result) {
-                is Result.Success<*> -> {
-                    val dataList = ArrayList<ReminderDataItem>()
-                    dataList.addAll((result.data as List<ReminderDTO>).map { reminder ->
-                        //map the reminder data from the DB to the be ready to be displayed on the UI
-                        ReminderDataItem(
-                            reminder.title,
-                            reminder.description,
-                            reminder.location,
-                            reminder.latitude,
-                            reminder.longitude,
-                            reminder.id
-                        )
-                    })
-                    remindersList.value = dataList
+            getRemindersUseCase.invoke().let {result->
+                showLoading.postValue(false)
+                when (result) {
+                    is Result.Success<*> -> {
+                        val dataList =  dbModelToReminderDTO(result.data as List<ReminderDTO>)
+                        _remindersList.value = dataList
+                    }
+                    is Result.Error ->
+                        showSnackBar.value = result.message
                 }
-                is Result.Error ->
-                    showSnackBar.value = result.message
             }
-
             //check if no data has to be shown
             invalidateShowNoData()
         }
@@ -61,4 +51,16 @@ class RemindersListViewModel @Inject constructor(
     private fun invalidateShowNoData() {
         showNoData.value = remindersList.value == null || remindersList.value!!.isEmpty()
     }
+}
+
+ fun dbModelToReminderDTO(reminders: List<ReminderDTO>) : List<ReminderDataItem>{
+     return reminders.map { reminder ->
+            ReminderDataItem(
+              reminder.title,
+              reminder.description,
+              reminder.location,
+              reminder.latitude,
+              reminder.longitude,
+              reminder.id)
+                        }
 }

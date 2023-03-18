@@ -1,4 +1,4 @@
-package com.udacity.project4.ui.locationreminders.geofence
+package com.udacity.project4.ui.savereminder.geofence
 
 import android.content.BroadcastReceiver
 import android.content.ContentValues.TAG

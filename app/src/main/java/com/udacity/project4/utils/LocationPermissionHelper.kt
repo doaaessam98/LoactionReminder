@@ -3,6 +3,7 @@ package com.udacity.project4.utils
 import android.Manifest
 import android.annotation.TargetApi
 import android.app.Activity
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -10,6 +11,7 @@ import android.location.LocationManager
 import android.net.Uri
 import android.os.Build
 import android.provider.Settings
+import android.util.Log
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.annotation.RequiresApi
@@ -32,10 +34,10 @@ class LocationPermissionHelper(
 ) {
 
     private val runningQOrLater = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
-
     @RequiresApi(Build.VERSION_CODES.M)
     fun checkPermissionThenDoMethod(methodTODO: () -> Unit) {
         if (checkGPSEnabled()) {
+            Log.e(TAG, "checkPermissionThenDoMethod: gps ok", )
             checkPermissionsAndStartingAMethod(methodTODO)
         }
     }
@@ -150,6 +152,12 @@ class LocationPermissionHelper(
             Manifest.permission.ACCESS_COARSE_LOCATION
         ) == PackageManager.PERMISSION_GRANTED
     }
+
+
+
+
+
+
 
     /** BackgroundLocation **/
 

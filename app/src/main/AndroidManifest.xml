@@ -22,7 +22,7 @@
 
 
         <activity
-            android:name=".ui.locationreminders.ReminderDescriptionActivity">
+            android:name=".ui.reminderDescription.ReminderDescriptionActivity">
         </activity>
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -30,12 +30,12 @@
 
 
         <receiver
-            android:name=".ui.locationreminders.geofence.GeofenceBroadcastReceiver"
+            android:name=".ui.savereminder.geofence.GeofenceBroadcastReceiver"
             android:exported="true"
             tools:node="merge"
              />
         <service
-            android:name=".ui.locationreminders.geofence.GeofenceTransitionsJobIntentService"
+            android:name=".ui.savereminder.geofence.GeofenceTransitionsJobIntentService"
             android:exported="true"
             tools:node="merge"
             android:permission="android.permission.BIND_JOB_SERVICE" />

@@ -74,4 +74,6 @@ abstract class BaseFragment<VDataBinding:ViewDataBinding, VM:BaseViewModel>() : 
         _binding=null
     }
 
+
+
 }

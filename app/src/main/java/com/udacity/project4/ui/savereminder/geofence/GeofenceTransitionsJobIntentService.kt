@@ -1,4 +1,4 @@
-package com.udacity.project4.ui.locationreminders.geofence
+package com.udacity.project4.ui.savereminder.geofence
 
 import android.content.Context
 import android.content.Intent
@@ -9,7 +9,7 @@ import com.udacity.project4.data.local.LocalDataSource
 import com.udacity.project4.domain.model.ReminderDTO
 import com.udacity.project4.base.Result
 import com.udacity.project4.domain.useCase.GetReminderById
-import com.udacity.project4.ui.locationreminders.geofence.GeofenceBroadcastReceiver.Companion.ACTION_GEOFENCE_EVENT
+import com.udacity.project4.ui.savereminder.geofence.GeofenceBroadcastReceiver.Companion.ACTION_GEOFENCE_EVENT
 import com.udacity.project4.ui.reminderslist.ReminderDataItem
 import com.udacity.project4.utils.sendNotification
 import kotlinx.coroutines.*

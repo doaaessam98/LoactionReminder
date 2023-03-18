@@ -15,7 +15,7 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="vertical"
-        tools:context=".ui.locationreminders.ReminderDescriptionActivity">
+        tools:context=".ui.reminderDescription.ReminderDescriptionActivity">
         <!--TODO: add the design of the reminder details-->
 
         <TextView
