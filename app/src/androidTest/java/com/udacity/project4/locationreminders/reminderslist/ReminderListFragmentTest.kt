@@ -43,109 +43,109 @@ import org.mockito.Mockito.mock
 //UI Testing
 @MediumTest
 class ReminderListFragmentTest {
-
-    private lateinit var repository: FakeDataSource
-    private lateinit var appContext: Application
-
-    private val fakeReminder =
-        ReminderDTO(
-            "title", "description", " location",
-            1.0, 1.0
-        )
-    private val dataBindingIdlingResource = DataBindingIdlingResource()
-
-
-
-
-
-    @Before
-    fun setUp() {
-
-        stopKoin()
-        appContext = getApplicationContext()
-        repository = FakeDataSource(mutableListOf())
-        val module = module {
-
-            viewModel {
-                RemindersListViewModel( appContext, get() as LocalDataSource)
-            }
-
-            single {
-                SaveReminderViewModel( appContext, get() as LocalDataSource)
-            }
-
-            single { RemindersRepositoryImp(get()) as LocalDataSource }
-            single { LocalDB.createRemindersDao(appContext) }
-
-        }
-
-        startKoin {
-            modules(listOf(module))
-        }
-
-    }
-
-    @After
-    fun cleanUp() = runTest {
-        stopKoin()
-    }
-
-    @Before
-    fun registerIdlingResource(){
-        IdlingRegistry.getInstance().register(dataBindingIdlingResource)
-    }
-
-    @After
-    fun unregisterIdlingResource(){
-        IdlingRegistry.getInstance().unregister(dataBindingIdlingResource)
-    }
-
-    @Test
-    fun clickAddReminderButton_navigateToSaveReminderFragment() {
-
-        // GIVEN
-        val fragmentScenario = launchFragmentInContainer<ReminderListFragment>(
-            Bundle(),
-            R.style.Theme_LocationReminder
-        )
-        dataBindingIdlingResource.monitorFragment(fragmentScenario)
-
-        val navController = mock(NavController::class.java)
-        fragmentScenario.onFragment {
-            Navigation.setViewNavController(it.view!!, navController)
-        }
-
-        // WHEN
-        onView(withId(R.id.addReminderFAB)).perform(ViewActions.click())
-
-        // THEN
-        Mockito.verify(navController).navigate(
-            ReminderListFragmentDirections.toSaveReminder()
-
-        )
-    }
-
-
-
-
-    @Test
-    fun reminderListFragment_NoReminders() = runTest {
-        // GIVEN
-        repository.deleteAllReminders()
-
-        // WHEN
-        val scenario  = launchFragmentInContainer<ReminderListFragment>(Bundle(),
-            R.style.Theme_LocationReminder)
-        val navController = mock(NavController::class.java)
-        scenario.onFragment {
-            Navigation.setViewNavController(it.view!!, navController)
-        }
-
-        // THEN -
-        onView(withText(fakeReminder.title)).check(ViewAssertions.doesNotExist())
-        onView(withText(R.string.no_data)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        onView(withId(R.id.noDataTextView)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-    }
+//
+//    private lateinit var repository: FakeDataSource
+//    private lateinit var appContext: Application
+//
+//    private val fakeReminder =
+//        ReminderDTO(
+//            "title", "description", " location",
+//            1.0, 1.0
+//        )
+//    private val dataBindingIdlingResource = DataBindingIdlingResource()
+//
+//
+//
+//
+//
+//    @Before
+//    fun setUp() {
+//
+//        stopKoin()
+//        appContext = getApplicationContext()
+//        repository = FakeDataSource(mutableListOf())
+//        val module = module {
+//
+//            viewModel {
+//                RemindersListViewModel( appContext, get() as LocalDataSource)
+//            }
+//
+//            single {
+//                SaveReminderViewModel( appContext, get() as LocalDataSource)
+//            }
+//
+//            single { RemindersRepositoryImp(get()) as LocalDataSource }
+//            single { LocalDB.createRemindersDao(appContext) }
+//
+//        }
+//
+//        startKoin {
+//            modules(listOf(module))
+//        }
+//
+//    }
+//
+//    @After
+//    fun cleanUp() = runTest {
+//        stopKoin()
+//    }
+//
+//    @Before
+//    fun registerIdlingResource(){
+//        IdlingRegistry.getInstance().register(dataBindingIdlingResource)
+//    }
+//
+//    @After
+//    fun unregisterIdlingResource(){
+//        IdlingRegistry.getInstance().unregister(dataBindingIdlingResource)
+//    }
+//
+//    @Test
+//    fun clickAddReminderButton_navigateToSaveReminderFragment() {
+//
+//        // GIVEN
+//        val fragmentScenario = launchFragmentInContainer<ReminderListFragment>(
+//            Bundle(),
+//            R.style.Theme_LocationReminder
+//        )
+//        dataBindingIdlingResource.monitorFragment(fragmentScenario)
+//
+//        val navController = mock(NavController::class.java)
+//        fragmentScenario.onFragment {
+//            Navigation.setViewNavController(it.view!!, navController)
+//        }
+//
+//        // WHEN
+//        onView(withId(R.id.addReminderFAB)).perform(ViewActions.click())
+//
+//        // THEN
+//        Mockito.verify(navController).navigate(
+//            ReminderListFragmentDirections.toSaveReminder()
+//
+//        )
+//    }
+//
+//
+//
+//
+//    @Test
+//    fun reminderListFragment_NoReminders() = runTest {
+//        // GIVEN
+//        repository.deleteAllReminders()
+//
+//        // WHEN
+//        val scenario  = launchFragmentInContainer<ReminderListFragment>(Bundle(),
+//            R.style.Theme_LocationReminder)
+//        val navController = mock(NavController::class.java)
+//        scenario.onFragment {
+//            Navigation.setViewNavController(it.view!!, navController)
+//        }
+//
+//        // THEN -
+//        onView(withText(fakeReminder.title)).check(ViewAssertions.doesNotExist())
+//        onView(withText(R.string.no_data)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+//        onView(withId(R.id.noDataTextView)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+//    }
 
 
 

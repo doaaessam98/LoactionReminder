@@ -395,7 +395,7 @@ class SelectLocationFragment : BaseFragment<FragmentSelectLocationBinding,SaveRe
 
             }
         } catch (e: java.lang.Exception) {
-            e.printStackTrace()
+            Log.e(TAG, "getCompleteAddressString:${e.printStackTrace()} ", )
 
         }
         return strAdd

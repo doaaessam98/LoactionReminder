@@ -33,8 +33,11 @@ class RemindersListViewModel @Inject constructor(
                 showLoading.postValue(false)
                 when (result) {
                     is Result.Success<*> -> {
-                        val dataList =  dbModelToReminderDTO(result.data as List<ReminderDTO>)
-                        _remindersList.value = dataList
+                        val dataList = result.data as List<ReminderDTO>
+                        val remindersList =  dataList.map {
+                              it.toReminderDataItem()
+                        }
+                        _remindersList.value = remindersList
                     }
                     is Result.Error ->
                         showSnackBar.value = result.message
@@ -53,14 +56,3 @@ class RemindersListViewModel @Inject constructor(
     }
 }
 
- fun dbModelToReminderDTO(reminders: List<ReminderDTO>) : List<ReminderDataItem>{
-     return reminders.map { reminder ->
-            ReminderDataItem(
-              reminder.title,
-              reminder.description,
-              reminder.location,
-              reminder.latitude,
-              reminder.longitude,
-              reminder.id)
-                        }
-}

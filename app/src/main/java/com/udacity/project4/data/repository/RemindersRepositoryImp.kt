@@ -55,17 +55,8 @@ class RemindersRepositoryImp @Inject constructor (
      * @param id to be used to get the reminder
      * @return Result the holds a Success object with the Reminder or an Error object with the error message
      */
-    override suspend fun getReminder(id: String): Result<ReminderDTO> = withContext(ioDispatcher) {
-        try {
-            val reminder = localDataSource.getReminder(id)
-            if (reminder != null) {
-                return@withContext Result.Success(reminder)
-            } else {
-                return@withContext Result.Error("Reminder not found!")
-            }
-        } catch (e: Exception) {
-            return@withContext Result.Error(e.localizedMessage)
-        }
+    override suspend fun getReminder(id: String): Result<ReminderDTO>  {
+        return localDataSource.getReminder(id)
     }
 
     /**

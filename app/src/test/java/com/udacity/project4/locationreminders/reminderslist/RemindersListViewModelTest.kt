@@ -3,32 +3,31 @@ package com.udacity.project4.locationreminders.reminderslist
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import org.hamcrest.CoreMatchers.`is`
-import org.hamcrest.MatcherAssert.assertThat
+import com.google.common.truth.Truth.assertThat
 
 import com.udacity.project4.locationreminders.MainCoroutineRule
 
-import com.udacity.project4.locationreminders.data.FakeDataSource
+import com.udacity.project4.locationreminders.data.FakeRepository
 import com.udacity.project4.domain.model.ReminderDTO
+import com.udacity.project4.domain.useCase.GetRemindersUseCase
 import com.udacity.project4.locationreminders.getOrAwaitValue
 import com.udacity.project4.ui.reminderslist.RemindersListViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.pauseDispatcher
-import kotlinx.coroutines.test.resumeDispatcher
-import org.hamcrest.core.Is
+import kotlinx.coroutines.test.*
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.koin.core.context.stopKoin
 
 @RunWith(AndroidJUnit4::class)
 @ExperimentalCoroutinesApi
 class RemindersListViewModelTest {
 
+    private lateinit var getRemindersUseCase: GetRemindersUseCase
     private lateinit var viewModel: RemindersListViewModel
-    private lateinit var reminderListRepo: FakeDataSource
+    private lateinit var reminderListRepo: FakeRepository
 
     private val fakeReminders =
         mutableListOf(
@@ -47,20 +46,21 @@ class RemindersListViewModelTest {
     var mainCoroutineRule = MainCoroutineRule()
 
     @Before
-    fun initializeViewModel() {
-        stopKoin()
-        reminderListRepo = FakeDataSource(fakeReminders)
-        viewModel = RemindersListViewModel(ApplicationProvider.getApplicationContext(), reminderListRepo)
+    fun init() {
+        reminderListRepo = FakeRepository(fakeReminders)
+        getRemindersUseCase = GetRemindersUseCase(reminderListRepo)
+        viewModel =
+            RemindersListViewModel(ApplicationProvider.getApplicationContext(), getRemindersUseCase)
     }
 
     @After
     fun cleanUp() {
-        stopKoin()
+
     }
 
 
     @Test
-    fun loadReminders_loadRemindersFromDataSource() {
+    fun loadReminders_loadRemindersFromDataSource_ReturnRemindersSuccessful() {
         //GIVEN
         viewModel.loadReminders()
 
@@ -70,38 +70,57 @@ class RemindersListViewModelTest {
         }
         //THEN
         val value = viewModel.remindersList.getOrAwaitValue()
-        assertThat(value, `is`(expectedResult))
+        assertThat(value).isEqualTo(expectedResult)
+
 
     }
 
 
     @Test
+    fun loadTasks_loading() = runTest {
+        // Main dispatcher will not run coroutines eagerly for this test
+        Dispatchers.setMain(StandardTestDispatcher())
+
+        // Load the task in the ViewModel
+        viewModel.loadReminders()
+
+
+        // Validate progress indicator is shown
+        assertThat(viewModel.showLoading.getOrAwaitValue()).isTrue()
+
+        // Execute pending coroutine actions
+        // Wait until coroutine in  viewModel.loadReminders() complete
+        advanceUntilIdle()
+
+        // Validate progress indicator is hidden
+        assertThat(viewModel.showLoading.getOrAwaitValue()).isFalse()
+
+    }
+
+    @Test
     fun loadReminders_showLoading() {
-       //Given
+        //Given
         mainCoroutineRule.pauseDispatcher()
-       //when
+        //when
         viewModel.loadReminders()
         //then
-        assertThat(viewModel.showLoading.getOrAwaitValue(), Is.`is`(true))
+        assertThat(viewModel.showLoading.getOrAwaitValue()).isTrue()
         mainCoroutineRule.resumeDispatcher()
-        assertThat(viewModel.showLoading.getOrAwaitValue(), Is.`is`(false))
+        assertThat(viewModel.showLoading.getOrAwaitValue()).isFalse()
     }
 
 
+    @Test
+    fun loadReminders_returnError() {
+        //Given
+        reminderListRepo.setReturnError(true)
+        //When
+        viewModel.loadReminders()
+        //Then
+        val value = viewModel.showSnackBar.getOrAwaitValue()
+        assertThat(value).isEqualTo("Error while getting reminders")
 
-        @Test
-        fun loadReminders_returnError() {
-            //Given
-            reminderListRepo.setReturnError(true)
-            //When
-            viewModel.loadReminders()
-            //Then
-            val value = viewModel.showSnackBar.getOrAwaitValue()
-            assertThat(value, `is`("Error while getting reminders"))
-
-        }
-
-
-
+    }
 
 }
+

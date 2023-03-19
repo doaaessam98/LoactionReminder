@@ -57,6 +57,8 @@
                 app:layout_constraintTop_toTopOf="@+id/title"
                 tools:text="Location" />
 
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </layout>

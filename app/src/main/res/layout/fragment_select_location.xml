@@ -13,6 +13,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <androidx.appcompat.widget.SearchView
             android:id="@+id/seach_view"
             android:layout_width="match_parent"
@@ -20,8 +21,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-             android:layout_margin="@dimen/_16sdp"
-            app:hint="Search Here"
+            android:layout_margin="@dimen/_16sdp"
+            app:queryHint="Search Here"
             />
         <fragment
             android:id="@+id/map"
