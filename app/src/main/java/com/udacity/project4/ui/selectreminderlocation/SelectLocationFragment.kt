@@ -4,14 +4,12 @@ package com.udacity.project4.ui.selectreminderlocation
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.location.Address
 import android.location.Geocoder
 import android.location.LocationManager
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Looper
@@ -20,7 +18,6 @@ import android.util.Log
 import android.view.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.app.ActivityCompat
@@ -32,8 +29,6 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.snackbar.Snackbar
-import com.udacity.project4.BuildConfig
 import com.udacity.project4.R
 import com.udacity.project4.base.BaseFragment
 import com.udacity.project4.base.NavigationCommand
@@ -105,7 +100,7 @@ class SelectLocationFragment : BaseFragment<FragmentSelectLocationBinding,SaveRe
                         Log.e(TAG, "onQueryTextSubmit:${e.printStackTrace()} ")
                     }
                     val address = addressList!![0]
-                    setMyLocationOnMap(address.latitude,address.longitude)
+                    setLocationOnMap(address.latitude,address.longitude)
 
 
                 }
@@ -131,9 +126,6 @@ class SelectLocationFragment : BaseFragment<FragmentSelectLocationBinding,SaveRe
         if(marker==null) {
             _viewModel.showSnackBar.value = getString(R.string.err_select_location)
         } else {
-            Log.e(TAG, "onLocationSelected: ${marker!!.title}")
-            Log.e(TAG, "onLocationSelected2: ${marker!!.position.latitude}")
-
             updateLocation(marker!!.position.latitude, marker!!.position.longitude,marker!!.title)
             _viewModel.navigationCommand.value = NavigationCommand.Back
         }
@@ -170,35 +162,16 @@ class SelectLocationFragment : BaseFragment<FragmentSelectLocationBinding,SaveRe
     override fun onMapReady(map: GoogleMap) {
             mMap = map
             setMapStyle(mMap)
-            setPOIClick(mMap)
-            setLongPressClick(mMap)
-           getUserLocation()
-
-    }
-
-    private fun setLongPressClick(map: GoogleMap)
-    {
-        map.setOnMapLongClickListener { latLng ->
-            map.clear()
-            val snippet = String.format(
-                Locale.getDefault(),
-                "Lat: %1$.5f, Long: %2$.5f",
-                latLng.latitude,
-                latLng.longitude
-            )
-            marker = map.addMarker(
-                MarkerOptions()
-                    .position(latLng)
-                    .title("Selected Location")
-                    .snippet(snippet)
-            )
-            binding.btnSaveLocation.text = getString(R.string.save)
-
-            marker?.showInfoWindow()
-            map.animateCamera(CameraUpdateFactory.newLatLng(latLng))
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 25f))
+            getUserLocation()
+        mMap.setOnPoiClickListener { poi ->
+            setLocationOnMap(poi.latLng.latitude,poi.latLng.latitude)
+        }
+        mMap.setOnMapLongClickListener { latLng ->
+            setLocationOnMap(latLng.latitude,latLng.latitude)
 
         }
+
+
     }
     private fun setMapStyle(map: GoogleMap) {
         try {
@@ -213,18 +186,7 @@ class SelectLocationFragment : BaseFragment<FragmentSelectLocationBinding,SaveRe
             Log.e(TAG, "Can't find style. Error: ", e)
         }
     }
-    private fun setPOIClick(map: GoogleMap) {
-        map.setOnPoiClickListener { poi ->
-            map.clear()
-            marker = map.addMarker(
-                MarkerOptions()
-                    .position(poi.latLng)
-                    .title(poi.name)
-            )
-            marker?.showInfoWindow()
-            map.animateCamera(CameraUpdateFactory.newLatLng(poi.latLng))
-        }
-    }
+
     private fun updateLocation(latitude: Double, longitude:Double,locationName: String? = null) {
         _viewModel.latitude.value = latitude
         _viewModel.longitude.value = longitude
@@ -304,13 +266,16 @@ class SelectLocationFragment : BaseFragment<FragmentSelectLocationBinding,SaveRe
         currentLocation.addOnCompleteListener {
              if(it.isSuccessful){
                  it.result?.let {location->
-                     setMyLocationOnMap(location.latitude,location.longitude)
+                     Log.e(TAG, "getCurrentLocation: ", )
+                     setLocationOnMap(location.latitude,location.longitude)
                  }
              }else {
                  val locationCallback = object : LocationCallback() {
                      override fun onLocationResult(locationResult: LocationResult) {
                          val locationResult = locationResult.lastLocation
                          if (locationResult != null) {
+                             Log.e(TAG, "2222222222222222222222222222222222222: ", )
+                             setLocationOnMap(locationResult.latitude,locationResult.longitude)
                              val myLocation =
                                  LatLng(locationResult.latitude, locationResult.longitude)
                              mMap.animateCamera(
@@ -330,52 +295,51 @@ class SelectLocationFragment : BaseFragment<FragmentSelectLocationBinding,SaveRe
 
     }
 
-    private fun setMyLocationOnMap(latitude: Double,longitude: Double){
-        val userLocation = LatLng(latitude,longitude)
-        val location = getCompleteAddressString(userLocation.latitude, userLocation.longitude)
+    private fun setLocationOnMap(latitude: Double, longitude: Double){
+        Log.e(TAG, "setLocationOnMap: ", )
+        val latLng = LatLng(latitude,longitude)
+        val location = getCompleteAddressString(latLng.latitude, latLng.longitude)
 
-        val snippets = String.format(
+
+                val snippet = String.format(
             Locale.getDefault(),
             "Lat: %1$.5f, Long: %2$.5f",
-            userLocation.latitude,
-            userLocation.longitude
+            latLng.latitude,
+            latLng.longitude
         )
 
-        marker = mMap.addMarker(MarkerOptions().position(userLocation).title(location).snippet(snippets))
+        mMap.clear()
+        marker = mMap.addMarker(MarkerOptions().position(latLng).title(location).snippet(snippet))
         marker?.showInfoWindow()
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 18f))
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15f))
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18f))
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
+        binding.btnSaveLocation.text = getString(R.string.save)
 
 
+
+//        val snippet = String.format(
+//            Locale.getDefault(),
+//            "Lat: %1$.5f, Long: %2$.5f",
+//            latLng.latitude,
+//            latLng.longitude
+//        )
+//        marker = mMap.addMarker(
+//            MarkerOptions()
+//                .position(latLng)
+//                .title("Selected Location")
+//                .snippet(snippet)
+//        )
+//        binding.btnSaveLocation.text = getString(R.string.save)
+//
+//        marker?.showInfoWindow()
+//        mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng))
+//        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 25f))
 
 
 
 
 
     }
-
-
-
-
-
-
-
-
-//    private fun shouldShowRequestPermission(): Boolean {
-//        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//            shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION);
-//        } else {
-//
-//
-//        }
-//    }
-
-
-
-
-
-
-
 
 
     private fun getCompleteAddressString(latitude: Double, longitude: Double): String? {

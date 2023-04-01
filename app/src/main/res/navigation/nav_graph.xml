@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/splashFragment">
+    app:startDestination="@id/reminderListFragment">
 
 
     <fragment
@@ -65,6 +65,11 @@
             android:id="@+id/action_splashFragment_to_authenticationFragment"
             app:destination="@id/authenticationFragment"
             app:popUpTo="@id/splashFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_splashFragment_to_reminderListFragment"
+            app:destination="@id/reminderListFragment"
+            app:popUpTo="@id/nav_graph"
             app:popUpToInclusive="true" />
     </fragment>
 

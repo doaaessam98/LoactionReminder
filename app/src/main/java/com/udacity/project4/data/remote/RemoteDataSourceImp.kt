@@ -22,7 +22,6 @@ class RemoteDataSourceImp @Inject constructor(
             .createSignInIntentBuilder()
             .setAvailableProviders(providers)
             .setTheme(R.style.Theme_LocationReminder)
-            .setLogo(R.drawable.map)
             .build()
 
         signInLauncher.launch(signInIntent)

@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.IdpResponse
@@ -19,7 +20,6 @@ import com.udacity.project4.base.navigateTo
 import com.udacity.project4.databinding.FragmentAuthenticationBinding
 import dagger.hilt.android.AndroidEntryPoint
 
-const val SIGN_IN_REQUEST_CODE = 1
 @AndroidEntryPoint
 
 class AuthenticationFragment : BaseFragment<FragmentAuthenticationBinding,AuthenticationViewModel>() {
@@ -41,15 +41,23 @@ class AuthenticationFragment : BaseFragment<FragmentAuthenticationBinding,Authen
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
            launchSignInFlow()
-           requireActivity().finish()
+          //this.findNavController().popBackStack()
+
+
     }
     private fun handelAuthResponse(result: FirebaseAuthUIAuthenticationResult?) {
-         val response  =result?.idpResponse
+         val response  = result?.idpResponse
         if (result?.resultCode == Activity.RESULT_OK) {
                  navigationToHome()
 
         } else{
+            if(response!=null) {
+                if(response.isRecoverableErrorResponse){
 
+                }
+            }else{
+               // findNavController().popBackStack()
+            }
         }
 
     }
@@ -70,7 +78,7 @@ class AuthenticationFragment : BaseFragment<FragmentAuthenticationBinding,Authen
             .createSignInIntentBuilder()
             .setAvailableProviders(providers)
             .setTheme(R.style.Theme_LocationReminder)
-            .setLogo(R.drawable.map)
+            .setLogo(R.drawable.login_img)
             .build()
 
         signInLauncher.launch(signInIntent)

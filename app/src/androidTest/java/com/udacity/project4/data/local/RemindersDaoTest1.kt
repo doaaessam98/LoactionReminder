@@ -1,4 +1,4 @@
-package com.udacity.project4.locationreminders.data.local
+package com.udacity.project4.data.local
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
@@ -24,9 +24,8 @@ import org.junit.Test
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
-//Unit test the DAO
 @SmallTest
-class RemindersDaoTest {
+class RemindersDaoTest1 {
 
    lateinit var database: RemindersDatabase
     @get:Rule

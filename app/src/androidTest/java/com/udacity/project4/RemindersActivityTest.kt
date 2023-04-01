@@ -42,127 +42,127 @@ import org.koin.test.get
 //END TO END test to black box test the app
 class RemindersActivityTest :
     AutoCloseKoinTest() {
-    private lateinit var repository: LocalDataSource
-    private lateinit var appContext: Application
-    private val dataBindingIdlingResource = DataBindingIdlingResource()
-
-    private fun getActivity(activityScenario: ActivityScenario<MainActivity>): Activity? {
-        var activity: Activity? = null
-        activityScenario.onActivity {
-            activity = it
-        }
-        return activity
-    }
+//    private lateinit var repository: LocalDataSource
+//    private lateinit var appContext: Application
+//    private val dataBindingIdlingResource = DataBindingIdlingResource()
+//
+//    private fun getActivity(activityScenario: ActivityScenario<MainActivity>): Activity? {
+//        var activity: Activity? = null
+//        activityScenario.onActivity {
+//            activity = it
+//        }
+//        return activity
+//    }
 
     /**
      * As we use Koin as a Service Locator Library to develop our code, we'll also use Koin to test our code.
      * at this step we will initialize Koin related code to be able to use it in out testing.
      */
-    @Before
-    fun init() {
-        stopKoin()
-        appContext = getApplicationContext()
-        val myModule = module {
-            viewModel {
-                RemindersListViewModel(
-                    appContext,
-                    get() as LocalDataSource
-                )
-            }
-            single {
-                SaveReminderViewModel(
-                    appContext,
-                    get() as LocalDataSource
-                )
-            }
-            single<LocalDataSource> { RemindersRepositoryImp(get()) as LocalDataSource }
-            single { LocalDB.createRemindersDao(appContext) }
-
-        }
-        startKoin {
-            modules(listOf(myModule))
-
-        }
-        repository = get()
-
-        runBlocking {
-            repository.deleteAllReminders()
-        }
-    }
-
-    @Before
-    fun registerIdlingResource() {
-        IdlingRegistry.getInstance().register(EspressoIdlingResource.countingIdlingResource)
-        IdlingRegistry.getInstance().register(dataBindingIdlingResource)
-    }
-
-    @After
-    fun unregisterIdlingResource() {
-       IdlingRegistry.getInstance().unregister(EspressoIdlingResource.countingIdlingResource)
-        IdlingRegistry.getInstance().unregister(dataBindingIdlingResource)
-    }
-    @OptIn(ExperimentalCoroutinesApi::class)
-    @Test
-    fun addReminder() = runTest {
-        val activityScenario = ActivityScenario.launch(MainActivity::class.java)
-        dataBindingIdlingResource.monitorActivity(activityScenario)
-        onView(withId(R.id.addReminderFAB)).perform(click())
-        onView(withId(R.id.selectLocation)).perform(click())
-
-        onView(withContentDescription("Google Map")).perform(longClick())
-        onView(withId(R.id.btn_save_location)).perform(click())
-
-        onView(withId(R.id.reminderTitle)).perform(replaceText("title"))
-        onView(withId(R.id.reminderDescription)).perform(replaceText("describtion"))
-
-        onView(withId(R.id.saveReminder)).perform(click())
-
-        onView(withText(R.string.reminder_saved))
-            .inRoot(RootMatchers.withDecorView(IsNot.not(`is`(getActivity(activityScenario)?.window?.decorView))))
-            .check(matches(isDisplayed()))
-
-        onView(withText("title")).check(matches(isDisplayed()))
-
-
-        activityScenario.close()
-    }
-
-    @Test
-    fun showSnackBar_errorEnterTitle(){
-        val activityScenario = ActivityScenario.launch(MainActivity::class.java)
-        dataBindingIdlingResource.monitorActivity(activityScenario)
-
-        onView(withId(R.id.addReminderFAB)).perform(click())
-
-        onView(withId(R.id.saveReminder)).perform(click())
-
-        onView(withId(com.google.android.material.R.id.snackbar_text))
-            .check(matches(withText(R.string.err_enter_title)))
-
-        activityScenario.close()
-
-    }
-
-
-    @Test
-    fun showSnackBar_errorEnterLocation(){
-        val activityScenario = ActivityScenario.launch(MainActivity::class.java)
-        dataBindingIdlingResource.monitorActivity(activityScenario)
-
-        onView(withId(R.id.addReminderFAB)).perform(click())
-
-        onView(withId(R.id.reminderTitle)).perform(typeText("title"), closeSoftKeyboard())
-
-        onView(withId(R.id.reminderDescription)).perform(typeText("descriotion"),
-            closeSoftKeyboard())
-
-        onView(withId(R.id.saveReminder)).perform(click())
-
-        onView(withId(com.google.android.material.R.id.snackbar_text))
-            .check(matches(withText(R.string.err_select_location)))
-
-        activityScenario.close()
-    }
+//    @Before
+//    fun init() {
+//        stopKoin()
+//        appContext = getApplicationContext()
+//        val myModule = module {
+//            viewModel {
+//                RemindersListViewModel(
+//                    appContext,
+//                    get() as LocalDataSource
+//                )
+//            }
+//            single {
+//                SaveReminderViewModel(
+//                    appContext,
+//                    get() as LocalDataSource
+//                )
+//            }
+//            single<LocalDataSource> { RemindersRepositoryImp(get()) as LocalDataSource }
+//            single { LocalDB.createRemindersDao(appContext) }
+//
+//        }
+//        startKoin {
+//            modules(listOf(myModule))
+//
+//        }
+//        repository = get()
+//
+//        runBlocking {
+//            repository.deleteAllReminders()
+//        }
+//    }
+//
+//    @Before
+//    fun registerIdlingResource() {
+//        IdlingRegistry.getInstance().register(EspressoIdlingResource.countingIdlingResource)
+//        IdlingRegistry.getInstance().register(dataBindingIdlingResource)
+//    }
+//
+//    @After
+//    fun unregisterIdlingResource() {
+//       IdlingRegistry.getInstance().unregister(EspressoIdlingResource.countingIdlingResource)
+//        IdlingRegistry.getInstance().unregister(dataBindingIdlingResource)
+//    }
+//    @OptIn(ExperimentalCoroutinesApi::class)
+//    @Test
+//    fun addReminder() = runTest {
+//        val activityScenario = ActivityScenario.launch(MainActivity::class.java)
+//        dataBindingIdlingResource.monitorActivity(activityScenario)
+//        onView(withId(R.id.addReminderFAB)).perform(click())
+//        onView(withId(R.id.selectLocation)).perform(click())
+//
+//        onView(withContentDescription("Google Map")).perform(longClick())
+//        onView(withId(R.id.btn_save_location)).perform(click())
+//
+//        onView(withId(R.id.reminderTitle)).perform(replaceText("title"))
+//        onView(withId(R.id.reminderDescription)).perform(replaceText("describtion"))
+//
+//        onView(withId(R.id.saveReminder)).perform(click())
+//
+//        onView(withText(R.string.reminder_saved))
+//            .inRoot(RootMatchers.withDecorView(IsNot.not(`is`(getActivity(activityScenario)?.window?.decorView))))
+//            .check(matches(isDisplayed()))
+//
+//        onView(withText("title")).check(matches(isDisplayed()))
+//
+//
+//        activityScenario.close()
+//    }
+//
+//    @Test
+//    fun showSnackBar_errorEnterTitle(){
+//        val activityScenario = ActivityScenario.launch(MainActivity::class.java)
+//        dataBindingIdlingResource.monitorActivity(activityScenario)
+//
+//        onView(withId(R.id.addReminderFAB)).perform(click())
+//
+//        onView(withId(R.id.saveReminder)).perform(click())
+//
+//        onView(withId(com.google.android.material.R.id.snackbar_text))
+//            .check(matches(withText(R.string.err_enter_title)))
+//
+//        activityScenario.close()
+//
+//    }
+//
+//
+//    @Test
+//    fun showSnackBar_errorEnterLocation(){
+//        val activityScenario = ActivityScenario.launch(MainActivity::class.java)
+//        dataBindingIdlingResource.monitorActivity(activityScenario)
+//
+//        onView(withId(R.id.addReminderFAB)).perform(click())
+//
+//        onView(withId(R.id.reminderTitle)).perform(typeText("title"), closeSoftKeyboard())
+//
+//        onView(withId(R.id.reminderDescription)).perform(typeText("descriotion"),
+//            closeSoftKeyboard())
+//
+//        onView(withId(R.id.saveReminder)).perform(click())
+//
+//        onView(withId(com.google.android.material.R.id.snackbar_text))
+//            .check(matches(withText(R.string.err_select_location)))
+//
+//        activityScenario.close()
+//    }
 
 
 

@@ -20,7 +20,7 @@ android {
         multiDexEnabled true
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "com.udacity.project4.CustomHitTestRunner"
     }
     buildTypes {
         release {
@@ -59,12 +59,17 @@ dependencies {
     // Architecture Components
 
     // hilt
-    implementation("com.google.dagger:hilt-android:2.38.1")
-    kapt("com.google.dagger:hilt-android-compiler:2.38.1")
+    implementation("com.google.dagger:hilt-android:2.44.2")
+    kapt("com.google.dagger:hilt-android-compiler:2.44.2")
     kapt 'androidx.hilt:hilt-compiler:1.0.0'
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.5.2'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
     // When using Kotlin.
     kapt("androidx.hilt:hilt-compiler:1.0.0")
+
+
+    // Hilt testing
+    androidTestImplementation 'com.google.dagger:hilt-android-testing:2.44.2'
+    kaptAndroidTest 'com.google.dagger:hilt-android-compiler:2.44.2'
 
 
     //Room dependencies
@@ -72,7 +77,7 @@ dependencies {
     implementation "androidx.room:room-runtime:$roomVersion"
     kapt "androidx.room:room-compiler:$roomVersion"
 
-    //Coroutines Dependencies ....1.6.4
+    //Coroutines Dependencies
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
     implementation  "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"
 
@@ -118,6 +123,8 @@ dependencies {
     testImplementation "androidx.test:core-ktx:$androidXTestCoreVersion"
     testImplementation "androidx.test.ext:junit-ktx:$androidXTestExtKotlinRunnerVersion"
     testImplementation "androidx.test:rules:$androidXTestRulesVersion"
+    debugImplementation "androidx.fragment:fragment-testing:$fragmentVersion"
+
 
 
     // AndroidX Test - Instrumented testing
@@ -141,8 +148,16 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation "androidx.test:runner:1.5.0"
     androidTestImplementation "org.robolectric:shadows-framework:4.9"
-
+    androidTestImplementation ("com.google.truth:truth:$truthVersion")
     implementation 'com.android.support:multidex:1.0.3'
+
+    // hilt  for testing
+    androidTestImplementation 'com.google.dagger:hilt-android-testing:2.44.2'
+    kaptAndroidTest 'com.google.dagger:hilt-android-compiler:2.44.2'
+
+    def nav_version = "2.5.3"
+
+    androidTestImplementation "androidx.navigation:navigation-testing:$nav_version"
 
     //lottie
     def lottieVersion = "5.1.1"

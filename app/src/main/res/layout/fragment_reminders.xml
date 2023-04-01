@@ -31,17 +31,32 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <com.airbnb.lottie.LottieAnimationView
+<!--            <com.airbnb.lottie.LottieAnimationView-->
+<!--                android:id="@+id/noDataTextView"-->
+<!--                android:minHeight="256dp"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:fadeVisible="@{viewModel.showNoData.booleanValue()}"-->
+<!--                app:lottie_rawRes="@raw/location_splash_animation"-->
+<!--                app:lottie_autoPlay="true"-->
+<!--                app:lottie_loop="true"/>-->
+
+
+            <TextView
                 android:id="@+id/noDataTextView"
-                android:minHeight="256dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:drawableTop="@drawable/ic_no_data"
                 android:fadeVisible="@{viewModel.showNoData.booleanValue()}"
-                app:lottie_rawRes="@raw/location_splash_animation"
-                app:lottie_autoPlay="true"
-                app:lottie_loop="true"/>
+                android:gravity="center"
+                android:text="@string/no_data"
+                android:textSize="@dimen/text_size_large"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ProgressBar
                 android:id="@+id/progressBar"

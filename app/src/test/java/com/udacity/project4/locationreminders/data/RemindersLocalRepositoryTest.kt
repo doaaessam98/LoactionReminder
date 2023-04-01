@@ -56,7 +56,7 @@ class RemindersLocalRepositoryTest {
         val expectedResult  = localDataSource.reminders?.size
 
         //then
-       assertThat(expectedResult).isEqualTo(2)
+       assertThat(expectedResult).isEqualTo(3)
 
     }
     @Test

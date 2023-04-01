@@ -1,4 +1,4 @@
-package com.udacity.project4.locationreminders.reminderslist
+package com.udacity.project4.ui.locationreminders.reminderslist
 
 import android.app.Application
 import android.os.Bundle
@@ -103,12 +103,12 @@ class ReminderListFragmentTest {
 //    @Test
 //    fun clickAddReminderButton_navigateToSaveReminderFragment() {
 //
-//        // GIVEN
-//        val fragmentScenario = launchFragmentInContainer<ReminderListFragment>(
-//            Bundle(),
-//            R.style.Theme_LocationReminder
-//        )
-//        dataBindingIdlingResource.monitorFragment(fragmentScenario)
+//
+//        dataBinding// GIVEN
+////        val fragmentScenario = launchFragmentInContainer<ReminderListFragment>(
+////            Bundle(),
+////            R.style.Theme_LocationReminder
+////        )IdlingResource.monitorFragment(fragmentScenario)
 //
 //        val navController = mock(NavController::class.java)
 //        fragmentScenario.onFragment {

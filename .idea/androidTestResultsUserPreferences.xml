@@ -3,63 +3,66 @@
   <component name="AndroidTestResultsUserPreferences">
     <option name="androidTestResultsTableState">
       <map>
-        <entry key="-1368649060">
+        <entry key="-1729641009">
           <value>
             <AndroidTestResultsTableState>
               <option name="preferredColumnWidths">
                 <map>
-                  <entry key="0177910740302733" value="120" />
                   <entry key="Duration" value="90" />
-                  <entry key="Infinix&#13;&#10; Infinix HOT 4 Lite" value="120" />
+                  <entry key="OF8PCIEENRHUK7Y5" value="120" />
+                  <entry key="OPPO" value="120" />
+                  <entry key="OPPO&#10; CPH2269" value="120" />
                   <entry key="Tests" value="360" />
                 </map>
               </option>
             </AndroidTestResultsTableState>
           </value>
         </entry>
-        <entry key="-1093744642">
+        <entry key="-896595871">
           <value>
             <AndroidTestResultsTableState>
               <option name="preferredColumnWidths">
                 <map>
-                  <entry key="0177910740302733" value="120" />
                   <entry key="Duration" value="90" />
-                  <entry key="Infinix&#13;&#10; Infinix HOT 4 Lite" value="120" />
+                  <entry key="OF8PCIEENRHUK7Y5" value="120" />
+                  <entry key="OPPO&#10; CPH2269" value="120" />
                   <entry key="Tests" value="360" />
                 </map>
               </option>
             </AndroidTestResultsTableState>
           </value>
         </entry>
-        <entry key="-671296246">
+        <entry key="-819253668">
           <value>
             <AndroidTestResultsTableState>
               <option name="preferredColumnWidths">
                 <map>
-                  <entry key="0177910740302733" value="120" />
                   <entry key="Duration" value="90" />
-                  <entry key="Infinix&#13;&#10; Infinix HOT 4 Lite" value="120" />
+                  <entry key="OF8PCIEENRHUK7Y5" value="120" />
+                  <entry key="OPPO" value="120" />
+                  <entry key="OPPO&#10; CPH2269" value="120" />
                   <entry key="Tests" value="360" />
                 </map>
               </option>
             </AndroidTestResultsTableState>
           </value>
         </entry>
-        <entry key="-566337095">
+        <entry key="-464950166">
           <value>
             <AndroidTestResultsTableState>
               <option name="preferredColumnWidths">
                 <map>
-                  <entry key="0177910740302733" value="120" />
                   <entry key="Duration" value="90" />
-                  <entry key="Infinix&#13;&#10; Infinix HOT 4 Lite" value="120" />
+                  <entry key="OF8PCIEENRHUK7Y5" value="120" />
+                  <entry key="OPPO" value="120" />
+                  <entry key="OPPO&#10; CPH2269" value="120" />
                   <entry key="Tests" value="360" />
                 </map>
               </option>
             </AndroidTestResultsTableState>
           </value>
         </entry>
-        <entry key="110941273">
+        <entry key="480235904">
           <value>
             <AndroidTestResultsTableState>
               <option name="preferredColumnWidths">
@@ -67,13 +70,30 @@
                   <entry key="0177910740302733" value="120" />
                   <entry key="Duration" value="90" />
                   <entry key="Infinix&#13;&#10; Infinix HOT 4 Lite" value="120" />
+                  <entry key="OF8PCIEENRHUK7Y5" value="120" />
+                  <entry key="OPPO&#10; CPH2269" value="120" />
                   <entry key="Tests" value="360" />
                 </map>
               </option>
             </AndroidTestResultsTableState>
           </value>
         </entry>
-        <entry key="358718836">
+        <entry key="941039070">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="326" />
+                  <entry key="OF8PCIEENRHUK7Y5" value="120" />
+                  <entry key="OPPO" value="120" />
+                  <entry key="OPPO&#10; CPH2269" value="355" />
+                  <entry key="Tests" value="596" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
+        <entry key="1702600695">
           <value>
             <AndroidTestResultsTableState>
               <option name="preferredColumnWidths">
@@ -81,36 +101,26 @@
                   <entry key="0177910740302733" value="120" />
                   <entry key="Duration" value="90" />
                   <entry key="Infinix&#13;&#10; Infinix HOT 4 Lite" value="120" />
+                  <entry key="OF8PCIEENRHUK7Y5" value="120" />
+                  <entry key="OPPO&#10; CPH2269" value="120" />
                   <entry key="Tests" value="360" />
                 </map>
               </option>
             </AndroidTestResultsTableState>
           </value>
         </entry>
-        <entry key="839652141">
+        <entry key="2126093043">
           <value>
             <AndroidTestResultsTableState>
               <option name="preferredColumnWidths">
                 <map>
                   <entry key="0177910740302733" value="120" />
-                  <entry key="Duration" value="90" />
+                  <entry key="Duration" value="116" />
                   <entry key="Infinix&#13;&#10; Infinix HOT 4 Lite" value="120" />
-                  <entry key="Tests" value="360" />
-                </map>
-              </option>
-            </AndroidTestResultsTableState>
-          </value>
-        </entry>
-        <entry key="1960108270">
-          <value>
-            <AndroidTestResultsTableState>
-              <option name="preferredColumnWidths">
-                <map>
-                  <entry key="0177910740302733" value="120" />
-                  <entry key="Duration" value="90" />
-                  <entry key="Infinix" value="120" />
-                  <entry key="Infinix&#13;&#10; Infinix HOT 4 Lite" value="120" />
-                  <entry key="Tests" value="360" />
+                  <entry key="OF8PCIEENRHUK7Y5" value="120" />
+                  <entry key="OPPO" value="120" />
+                  <entry key="OPPO&#10; CPH2269" value="145" />
+                  <entry key="Tests" value="386" />
                 </map>
               </option>
             </AndroidTestResultsTableState>

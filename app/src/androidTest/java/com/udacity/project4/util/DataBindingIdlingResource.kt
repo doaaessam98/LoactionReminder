@@ -109,3 +109,27 @@ fun DataBindingIdlingResource.monitorFragment(fragmentScenario: FragmentScenario
         this.activity = it.requireActivity()
     }
 }
+
+    fun DataBindingIdlingResource.monitorFragmentHilt(fragment: Fragment) {
+           this.activity = fragment.requireActivity()
+
+    }
+
+
+
+
+class SimpleIdlingResource(private val resourceName: String) : IdlingResource {
+    override fun getName(): String {
+        TODO("Not yet implemented")
+    }
+
+    override fun isIdleNow(): Boolean {
+        TODO("Not yet implemented")
+    }
+
+    override fun registerIdleTransitionCallback(callback: IdlingResource.ResourceCallback?) {
+        TODO("Not yet implemented")
+    }
+}
+
+
